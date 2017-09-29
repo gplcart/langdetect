@@ -1,0 +1,12 @@
+{
+    "name": "gplcart/langdetect",
+    "type": "gplcart-module",
+    "description": "Allows to detect user's language and automatically redirect the user to the language",
+    "keywords": ["gplcart", "ecommerce", "shopping cart", "gplcart module", "php"],
+    "license": "GPL-3.0+",
+    "require": {
+        "gplcart/composer-module-installer": "*"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
