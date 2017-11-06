@@ -9,7 +9,8 @@
 
 namespace gplcart\modules\langdetect;
 
-use gplcart\core\Module;
+use gplcart\core\Module,
+    gplcart\core\Config;
 
 /**
  * Main class for Language detector module
@@ -18,11 +19,11 @@ class LangDetect extends Module
 {
 
     /**
-     * Constructor
+     * @param Config $config
      */
-    public function __construct()
+    public function __construct(Config $config)
     {
-        parent::__construct();
+        parent::__construct($config);
     }
 
     /**
@@ -46,7 +47,7 @@ class LangDetect extends Module
      */
     public function hookLanguageSetBefore($langcode)
     {
-        $settings = $this->config->module('langdetect');
+        $settings = $this->config->getFromModule('langdetect');
 
         if (empty($settings['redirect'])) {
             return null;

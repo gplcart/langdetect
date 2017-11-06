@@ -43,7 +43,7 @@ class Settings extends BackendController
         $this->setBreadcrumbEditSettings();
 
         $this->setData('languages', $this->getLanguagesSettings());
-        $this->setData('settings', $this->config->module('langdetect'));
+        $this->setData('settings', $this->config->getFromModule('langdetect'));
 
         $this->submitSettings();
         $this->outputEditSettings();
