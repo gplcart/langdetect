@@ -43,9 +43,17 @@ class LangDetect extends Module
     /**
      * Implements hook "language.set.before"
      * @param string $langcode
-     * @return null
      */
     public function hookLanguageSetBefore($langcode)
+    {
+        $this->setDetectedLanguage($langcode);
+    }
+
+    /**
+     * Sets detected language
+     * @param string $langcode
+     */
+    protected function setDetectedLanguage($langcode)
     {
         $settings = $this->config->getFromModule('langdetect');
 
@@ -83,8 +91,6 @@ class LangDetect extends Module
             $redirect = $url_helper->language($detected_langcode, $url_helper->path());
             $url_helper->redirect($redirect, array(), true, true);
         }
-
-        return null;
     }
 
 }
