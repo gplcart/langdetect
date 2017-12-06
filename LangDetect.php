@@ -10,20 +10,54 @@
 namespace gplcart\modules\langdetect;
 
 use gplcart\core\Module,
-    gplcart\core\Config;
+    gplcart\core\Container;
+use gplcart\core\helpers\Url as UrlHelper,
+    gplcart\core\helpers\Request as RequestHelper,
+    gplcart\core\helpers\Session as SessionHelper;
 
 /**
  * Main class for Language detector module
  */
-class LangDetect extends Module
+class LangDetect
 {
 
     /**
-     * @param Config $config
+     * URL helper class instance
+     * @var \gplcart\core\helpers\Url $url
      */
-    public function __construct(Config $config)
+    protected $url;
+
+    /**
+     * Module class instance
+     * @var \gplcart\core\Module $module
+     */
+    protected $module;
+
+    /**
+     * Session helper class instance
+     * @var \gplcart\core\helpers\Session $session
+     */
+    protected $session;
+
+    /**
+     * Request helper class instance
+     * @var \gplcart\core\helpers\Request $request
+     */
+    protected $request;
+
+    /**
+     * @param Module $module
+     * @param UrlHelper $url
+     * @param RequestHelper $request
+     * @param SessionHelper $session
+     */
+    public function __construct(Module $module, UrlHelper $url, RequestHelper $request,
+            SessionHelper $session)
     {
-        parent::__construct($config);
+        $this->url = $url;
+        $this->module = $module;
+        $this->request = $request;
+        $this->session = $session;
     }
 
     /**
@@ -55,24 +89,19 @@ class LangDetect extends Module
      */
     protected function setDetectedLanguage($langcode)
     {
-        $settings = $this->config->getFromModule('langdetect');
+        $settings = $this->module->getSettings('langdetect');
 
         if (empty($settings['redirect'])) {
             return null;
         }
 
-        /* @var $session_helper \gplcart\core\helpers\Session */
-        $session_helper = $this->getHelper('Session');
-        $saved = $session_helper->get('langdetect');
+        $saved = $this->session->get('langdetect');
 
         if (isset($saved)) {
             return null;
         }
 
-        /* @var $request_helper \gplcart\core\helpers\Request */
-        $request_helper = $this->getHelper('Request');
-        $detected_langcode = $request_helper->language();
-
+        $detected_langcode = $this->request->language();
         if (!in_array($detected_langcode, $settings['redirect'])) {
             return null;
         }
@@ -83,14 +112,21 @@ class LangDetect extends Module
             return null;
         }
 
-        /* @var $url_helper \gplcart\core\helpers\Url */
-        $url_helper = $this->getHelper('Url');
-        $session_helper->set('langdetect', $detected_langcode);
+        $this->session->set('langdetect', $detected_langcode);
 
         if ($detected_langcode !== $langcode) {
-            $redirect = $url_helper->language($detected_langcode, $url_helper->path());
-            $url_helper->redirect($redirect, array(), true, true);
+            $redirect = $this->url->language($detected_langcode, $this->url->path());
+            $this->url->redirect($redirect, array(), true, true);
         }
+    }
+
+    /**
+     * Language model class instance
+     * @return \gplcart\core\models\Language
+     */
+    protected function getLanguage()
+    {
+        return Container::get('gplcart\\core\\models\\Language');
     }
 
 }

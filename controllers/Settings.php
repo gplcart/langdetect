@@ -9,7 +9,6 @@
 
 namespace gplcart\modules\langdetect\controllers;
 
-use gplcart\core\models\Module as ModuleModel;
 use gplcart\core\controllers\backend\Controller as BackendController;
 
 /**
@@ -19,19 +18,11 @@ class Settings extends BackendController
 {
 
     /**
-     * Module model instance
-     * @var \gplcart\core\models\Module $module
+     * Constructor
      */
-    protected $module;
-
-    /**
-     * @param ModuleModel $module
-     */
-    public function __construct(ModuleModel $module)
+    public function __construct()
     {
         parent::__construct();
-
-        $this->module = $module;
     }
 
     /**
@@ -43,7 +34,7 @@ class Settings extends BackendController
         $this->setBreadcrumbEditSettings();
 
         $this->setData('languages', $this->getLanguagesSettings());
-        $this->setData('settings', $this->config->getFromModule('langdetect'));
+        $this->setData('settings', $this->module->getSettings('langdetect'));
 
         $this->submitSettings();
         $this->outputEditSettings();
@@ -64,8 +55,7 @@ class Settings extends BackendController
      */
     protected function setTitleEditSettings()
     {
-        $vars = array('%name' => $this->text('Language detector'));
-        $title = $this->text('Edit %name settings', $vars);
+        $title = $this->text('Edit %name settings', array('%name' => $this->text('Language detector')));
         $this->setTitle($title);
     }
 
