@@ -12,7 +12,7 @@ namespace gplcart\modules\langdetect;
 use gplcart\core\Module,
     gplcart\core\Container;
 use gplcart\core\helpers\Url as UrlHelper,
-    gplcart\core\helpers\Request as RequestHelper,
+    gplcart\core\helpers\Server as ServerHelper,
     gplcart\core\helpers\Session as SessionHelper;
 
 /**
@@ -40,23 +40,23 @@ class LangDetect
     protected $session;
 
     /**
-     * Request helper class instance
-     * @var \gplcart\core\helpers\Request $request
+     * Server helper class instance
+     * @var \gplcart\core\helpers\Server $server
      */
-    protected $request;
+    protected $server;
 
     /**
      * @param Module $module
      * @param UrlHelper $url
-     * @param RequestHelper $request
+     * @param ServerHelper $server
      * @param SessionHelper $session
      */
-    public function __construct(Module $module, UrlHelper $url, RequestHelper $request,
+    public function __construct(Module $module, UrlHelper $url, ServerHelper $server,
             SessionHelper $session)
     {
         $this->url = $url;
         $this->module = $module;
-        $this->request = $request;
+        $this->server = $server;
         $this->session = $session;
     }
 
@@ -75,17 +75,17 @@ class LangDetect
     }
 
     /**
-     * Implements hook "language.set.before"
+     * Implements hook "translation.set.before"
      * @param string $langcode
      */
-    public function hookLanguageSetBefore($langcode)
+    public function hookTranslationSetBefore($langcode)
     {
         $this->setDetectedLanguage($langcode);
     }
 
     /**
-     * Sets detected language
-     * @param string $langcode
+     * @param $langcode
+     * @return null
      */
     protected function setDetectedLanguage($langcode)
     {
@@ -101,7 +101,7 @@ class LangDetect
             return null;
         }
 
-        $detected_langcode = $this->request->language();
+        $detected_langcode = $this->server->httpLanguage();
         if (!in_array($detected_langcode, $settings['redirect'])) {
             return null;
         }
