@@ -9,8 +9,8 @@
 
 namespace gplcart\modules\langdetect;
 
-use gplcart\core\Module,
-    gplcart\core\Container;
+use gplcart\core\Container,
+    gplcart\core\Module as CoreModule;
 use gplcart\core\helpers\Url as UrlHelper,
     gplcart\core\helpers\Server as ServerHelper,
     gplcart\core\helpers\Session as SessionHelper;
@@ -18,7 +18,7 @@ use gplcart\core\helpers\Url as UrlHelper,
 /**
  * Main class for Language detector module
  */
-class LangDetect
+class Module
 {
 
     /**
@@ -46,12 +46,12 @@ class LangDetect
     protected $server;
 
     /**
-     * @param Module $module
+     * @param CoreModule $module
      * @param UrlHelper $url
      * @param ServerHelper $server
      * @param SessionHelper $session
      */
-    public function __construct(Module $module, UrlHelper $url, ServerHelper $server,
+    public function __construct(CoreModule $module, UrlHelper $url, ServerHelper $server,
             SessionHelper $session)
     {
         $this->url = $url;
