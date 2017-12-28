@@ -118,6 +118,8 @@ class Module
             $redirect = $this->url->language($detected_langcode, $this->url->path());
             $this->url->redirect($redirect, array(), true, true);
         }
+
+        return null;
     }
 
     /**
