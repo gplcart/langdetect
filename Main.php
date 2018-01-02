@@ -18,7 +18,7 @@ use gplcart\core\helpers\Url as UrlHelper,
 /**
  * Main class for Language detector module
  */
-class Module
+class Main
 {
 
     /**
