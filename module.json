@@ -1,12 +1,12 @@
 {
-    "name": "Language detector",
-    "version": "1.0.0-dev",
-    "description": "Allows to detect user's language and automatically redirect the user to the language",
-    "author": "Iurii Makukh <gplcart.software@gmail.com>",
-    "core": "1.x",
-    "license": "GPL-3.0+",
-    "configure": "admin/module/settings/langdetect",
-    "settings": {
-        "redirect": []
-    }
+  "name": "Language detector",
+  "version": "1.0.0-dev",
+  "description": "Allows to detect user's language and automatically redirect the user to the language",
+  "author": "Iurii Makukh <gplcart.software@gmail.com>",
+  "core": "1.x",
+  "license": "GPL-3.0+",
+  "configure": "admin/module/settings/langdetect",
+  "settings": {
+    "redirect": []
+  }
 }

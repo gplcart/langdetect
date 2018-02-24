@@ -9,11 +9,11 @@
 
 namespace gplcart\modules\langdetect;
 
-use gplcart\core\Container,
-    gplcart\core\Module as CoreModule;
-use gplcart\core\helpers\Url as UrlHelper,
-    gplcart\core\helpers\Server as ServerHelper,
-    gplcart\core\helpers\Session as SessionHelper;
+use gplcart\core\Container;
+use gplcart\core\helpers\Server;
+use gplcart\core\helpers\Session;
+use gplcart\core\helpers\Url;
+use gplcart\core\Module;
 
 /**
  * Main class for Language detector module
@@ -46,13 +46,13 @@ class Main
     protected $server;
 
     /**
-     * @param CoreModule $module
-     * @param UrlHelper $url
-     * @param ServerHelper $server
-     * @param SessionHelper $session
+     * Main constructor.
+     * @param Module $module
+     * @param Url $url
+     * @param Server $server
+     * @param Session $session
      */
-    public function __construct(CoreModule $module, UrlHelper $url, ServerHelper $server,
-            SessionHelper $session)
+    public function __construct(Module $module, Url $url, Server $server, Session $session)
     {
         $this->url = $url;
         $this->module = $module;
@@ -80,14 +80,15 @@ class Main
      */
     public function hookTranslationSetBefore($langcode)
     {
-        $this->setDetectedLanguage($langcode);
+        $this->setLanguage($langcode);
     }
 
     /**
+     * Sets detected language
      * @param $langcode
      * @return null
      */
-    protected function setDetectedLanguage($langcode)
+    protected function setLanguage($langcode)
     {
         $settings = $this->module->getSettings('langdetect');
 
@@ -106,7 +107,7 @@ class Main
             return null;
         }
 
-        $language = $this->getLanguage()->get($detected_langcode);
+        $language = $this->getLanguageModel()->get($detected_langcode);
 
         if (empty($language['status'])) {
             return null;
@@ -126,9 +127,11 @@ class Main
      * Language model class instance
      * @return \gplcart\core\models\Language
      */
-    protected function getLanguage()
+    protected function getLanguageModel()
     {
-        return Container::get('gplcart\\core\\models\\Language');
+        /** @var \gplcart\core\models\Language $instance */
+        $instance = Container::get('gplcart\\core\\models\\Language');
+        return $instance;
     }
 
 }
