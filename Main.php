@@ -103,6 +103,7 @@ class Main
         }
 
         $detected_langcode = $this->server->httpLanguage();
+
         if (!in_array($detected_langcode, $settings['redirect'])) {
             return null;
         }
